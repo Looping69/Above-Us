@@ -15,7 +15,7 @@ export const momentEvents: MomentEvent[] = [
     },
     outcome: {
       connectionDelta: { trust: 2, comfort: 1 },
-      stateDelta: {},
+      stateDelta: { trust: 1 },
       description: 'The connection deepens. They feel slightly less alone.',
     },
     tone: 'emotional',
@@ -33,12 +33,12 @@ export const momentEvents: MomentEvent[] = [
       minComfort: 6,
       maxResistance: 2,
       requiredState: {
-        anxiety: 5,
+        trust: 3,
       },
     },
     outcome: {
       connectionDelta: { trust: 1, comfort: 2, curiosity: 1 },
-      stateDelta: { anxiety: -1 },
+      stateDelta: { trust: 1 },
       description: 'They let themselves be seen for a moment, and the bond stabilizes.',
     },
     tone: 'emotional',
@@ -59,12 +59,12 @@ export const momentEvents: MomentEvent[] = [
         creator: 4,
       },
       requiredState: {
-        ambition: 6,
+        curiosity: 4,
       },
     },
     outcome: {
       connectionDelta: { curiosity: 2, trust: 1, attraction: 1 },
-      stateDelta: { ambition: 1 },
+      stateDelta: { curiosity: 1 },
       description: 'A new possibility takes root, reshaping how they imagine tomorrow.',
     },
     tone: 'revelation',
@@ -83,13 +83,10 @@ export const momentEvents: MomentEvent[] = [
       minAlignment: {
         manipulator: 3,
       },
-      requiredState: {
-        stress: 8,
-      },
     },
     outcome: {
       connectionDelta: { dependence: 2, comfort: -1, resistance: 1 },
-      stateDelta: { stress: -2, anxiety: 1 },
+      stateDelta: { trust: -1 },
       description: 'They hold together, but now they lean harder on outside influence.',
     },
     tone: 'dramatic',

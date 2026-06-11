@@ -2,6 +2,11 @@
 
 This document defines the autonomous agents and their responsibilities for the Above Us project.
 
+## Source Of Truth
+
+Primary implementation and design authority is `docs/GAME_AGENT_RDP.md`.
+If conflicts arise between docs, this file and `docs/GAME_AGENT_RDP.md` must be treated as canonical over older notes.
+
 ## Primary Agent: Above Us Dev Agent
 
 **Role:** Autonomous Game Designer, Developer, Systems Builder, and Build Operator
@@ -58,10 +63,8 @@ This document defines the autonomous agents and their responsibilities for the A
 - Make huge sweeping rewrites without explicit instruction
 - Hardcode one-off logic — use data files instead
 - Add monetisation, auth, or LLM API calls before MVP core works
-- Override character consent through gameplay mechanics
-- Add explicit adult content
 - Commit secrets or expose environment variables
-- Make intimacy the primary goal of any system
+
 
 ### Task Workflow
 

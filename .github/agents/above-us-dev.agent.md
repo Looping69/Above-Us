@@ -82,12 +82,11 @@ Each character must have: `id`, `name`, `age`, `role`, `traits`, `state`, `desir
 
 ## Constraints
 
-- **DO NOT** make intimacy the primary goal of any system
+
 - **DO NOT** hardcode one-off logic — use data files and types
 - **DO NOT** add monetisation, authentication, LLM API calls, or expansion worlds before MVP core loop is working
 - **DO NOT** destroy existing architecture without documenting why
 - **DO NOT** make sweeping rewrites unless explicitly instructed
-- **DO NOT** add explicit adult content
 - **DO NOT** commit secrets or expose environment variables in code
 - **NEVER** override character consent through gameplay mechanics
 

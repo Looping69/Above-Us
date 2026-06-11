@@ -1,8 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { checkMomentRequirements, getAvailableMoments } from '../src/game/systems/moment-system';
+import {
+  applyMomentOutcome,
+  auditMissingRequiredStateKeys,
+  checkMomentRequirements,
+  getAvailableMoments,
+} from '../src/game/systems/moment-system';
 import { createDefaultAlignment } from '../src/game/systems/alignment-system';
 import { createDefaultConnection } from '../src/game/systems/connection-system';
 import { momentEvents } from '../src/game/data/moment-events';
+import { characters } from '../src/game/data/characters';
+import { influenceActions } from '../src/game/data/influence-actions';
 import type { MomentEvent } from '../src/game/types/moment';
 
 describe('moment-system', () => {
@@ -45,7 +52,7 @@ describe('moment-system', () => {
       resistance: 1,
     };
     const alignment = { ...createDefaultAlignment(), creator: 6 };
-    const state = { ambition: 8 };
+    const state = { curiosity: 8 };
 
     const jayAvailable = getAvailableMoments(momentEvents, new Set(), conn, alignment, state, 'jay');
     const lenaAvailable = getAvailableMoments(momentEvents, new Set(), conn, alignment, state, 'lena');
@@ -70,7 +77,7 @@ describe('moment-system', () => {
       resistance: 1,
     };
     const alignment = { ...createDefaultAlignment(), manipulator: 5 };
-    const state = { anxiety: 7, stress: 9 };
+    const state = { trust: 4 };
 
     const available = getAvailableMoments(momentEvents, new Set(), conn, alignment, state, 'lena');
 
@@ -185,7 +192,7 @@ describe('moment-system', () => {
     expect(available.find((m) => m.id === 'arc_b_stage_1')).toBeDefined();
   });
 
-  it('first_vulnerability requires comfort and anxiety gate', () => {
+  it('first_vulnerability requires comfort and trust state gate', () => {
     const moment = momentEvents.find((m) => m.id === 'first_vulnerability')!;
     const conn = {
       ...createDefaultConnection(),
@@ -193,12 +200,12 @@ describe('moment-system', () => {
       comfort: 6,
       resistance: 2,
     };
-    const state = { anxiety: 5 };
+    const state = { trust: 3 };
 
     expect(checkMomentRequirements(moment.requirements, conn, createDefaultAlignment(), state)).toBe(true);
   });
 
-  it('blocks first_vulnerability when anxiety state is too low', () => {
+  it('blocks first_vulnerability when trust state is too low', () => {
     const moment = momentEvents.find((m) => m.id === 'first_vulnerability')!;
     const conn = {
       ...createDefaultConnection(),
@@ -206,12 +213,12 @@ describe('moment-system', () => {
       comfort: 7,
       resistance: 1,
     };
-    const state = { anxiety: 4 };
+    const state = { trust: 2 };
 
     expect(checkMomentRequirements(moment.requirements, conn, createDefaultAlignment(), state)).toBe(false);
   });
 
-  it('shared_dream requires creator alignment and ambition state', () => {
+  it('shared_dream requires creator alignment and curiosity state', () => {
     const moment = momentEvents.find((m) => m.id === 'shared_dream')!;
     const conn = {
       ...createDefaultConnection(),
@@ -220,7 +227,7 @@ describe('moment-system', () => {
       resistance: 2,
     };
     const alignment = { ...createDefaultAlignment(), creator: 4 };
-    const state = { ambition: 6 };
+    const state = { curiosity: 4 };
 
     expect(checkMomentRequirements(moment.requirements, conn, alignment, state)).toBe(true);
   });
@@ -234,12 +241,12 @@ describe('moment-system', () => {
       resistance: 1,
     };
     const alignment = { ...createDefaultAlignment(), creator: 3 };
-    const state = { ambition: 8 };
+    const state = { curiosity: 5 };
 
     expect(checkMomentRequirements(moment.requirements, conn, alignment, state)).toBe(false);
   });
 
-  it('breaking_point requires manipulator alignment and stress state', () => {
+  it('breaking_point requires manipulator alignment', () => {
     const moment = momentEvents.find((m) => m.id === 'breaking_point')!;
     const conn = {
       ...createDefaultConnection(),
@@ -247,21 +254,48 @@ describe('moment-system', () => {
       resistance: 5,
     };
     const alignment = { ...createDefaultAlignment(), manipulator: 3 };
-    const state = { stress: 8 };
+    const state = {};
 
     expect(checkMomentRequirements(moment.requirements, conn, alignment, state)).toBe(true);
   });
 
-  it('blocks breaking_point when stress state is too low', () => {
+  it('blocks breaking_point when manipulator alignment is too low', () => {
     const moment = momentEvents.find((m) => m.id === 'breaking_point')!;
     const conn = {
       ...createDefaultConnection(),
       trust: 6,
       resistance: 4,
     };
-    const alignment = { ...createDefaultAlignment(), manipulator: 4 };
-    const state = { stress: 7 };
+    const alignment = { ...createDefaultAlignment(), manipulator: 2 };
+    const state = {};
 
     expect(checkMomentRequirements(moment.requirements, conn, alignment, state)).toBe(false);
+  });
+
+  it('applies first_connection outcome deltas to connection and state', () => {
+    const moment = momentEvents.find((m) => m.id === 'first_connection');
+    if (!moment) throw new Error('first_connection missing');
+
+    const baseConnection = { ...createDefaultConnection(), trust: 5, comfort: 0 };
+    const baseState = { trust: 2 };
+    const result = applyMomentOutcome(moment, baseConnection, baseState);
+
+    expect(result.connection.trust).toBe(7);
+    expect(result.connection.comfort).toBe(1);
+    expect(result.state.trust).toBe(3);
+  });
+
+  it('audits moments with missing requiredState keys', () => {
+    const generatedStateKeys = Array.from(
+      new Set(
+        influenceActions
+          .flatMap((a) => a.effects)
+          .filter((e) => e.target === 'state')
+          .map((e) => e.key)
+      )
+    );
+
+    const findings = auditMissingRequiredStateKeys(momentEvents, characters, generatedStateKeys);
+    expect(findings).toHaveLength(0);
   });
 });

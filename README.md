@@ -8,6 +8,11 @@ An experimental game where the player is an unseen force observing a modern city
 
 ## Quick Start
 
+## Source Of Truth
+
+For active agent-driven development, the canonical design authority is `docs/GAME_AGENT_RDP.md`.
+Supporting structure and planning docs live in `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`, and `docs/CONTENT_GUIDE.md`.
+
 ### Install Dependencies
 ```bash
 npm install
@@ -114,7 +119,6 @@ Strategic tension: **focus on one character or spread influence across many?**
 - ✅ Multi-dimensional intimacy (connection, not single meter)
 - ✅ Character agency maintained; influence sets conditions, not outcomes
 - ✅ TypeScript strict mode enforced
-- ❌ No explicit adult content
 - ❌ No monetisation in MVP
 - ❌ No authentication / backend in MVP
 - ❌ No LLM integration yet (systems-only MVP)

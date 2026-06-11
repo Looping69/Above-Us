@@ -7,7 +7,7 @@ import { characters as defaultCharacters } from '../../game/data/characters';
 import { createDefaultAlignment } from '../../game/systems/alignment-system';
 import { createDefaultConnection } from '../../game/systems/connection-system';
 import { applyInfluenceAction } from '../../game/systems/influence-system';
-import { getAvailableMoments } from '../../game/systems/moment-system';
+import { applyMomentOutcome, getAvailableMoments } from '../../game/systems/moment-system';
 import { momentEvents } from '../../game/data/moment-events';
 import { saveGame, loadGame, clearSave } from '../../game/persistence/save-load';
 import {
@@ -143,6 +143,15 @@ export const useGameStore = create<GameState>((set, get) => {
       const triggered = available.length > 0 ? available[0] : null;
       const newTriggered = new Set(state.triggeredMoments);
       if (triggered) newTriggered.add(triggered.id);
+
+      const withMoment = triggered
+        ? applyMomentOutcome(triggered, newConnections[targetId], newCharStates[targetId])
+        : null;
+
+      if (withMoment) {
+        newConnections[targetId] = withMoment.connection;
+        newCharStates[targetId] = withMoment.state;
+      }
 
       set({
         alignment: result.newAlignment,
