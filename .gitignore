@@ -1,5 +1,6 @@
 node_modules/
 dist/
 above-us-tmp/
+artifacts/
 .DS_Store
 *.local

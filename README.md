@@ -160,6 +160,7 @@ Later, an optional LLM layer can generate character thoughts, dialogue, and flav
 
 ## Testing
 
+### Unit Tests
 All core systems have unit tests:
 - `alignment-system.test.ts` – alignment tracking and identity detection
 - `influence-system.test.ts` – action effects and state changes
@@ -168,6 +169,22 @@ All core systems have unit tests:
 - `character-data.test.ts` – data integrity (all adults, all fields present)
 
 Run: `npm run test`
+
+### Balance Regression Testing (Fuzz)
+Moment unlock reachability is guarded by a deterministic fuzz test that runs randomized action sequences and measures success rates. This catches subtle balance regressions.
+
+**Local workflow:**
+```bash
+# Check current balance against baseline
+npm run fuzz:check
+
+# After intentional balance adjustments, commit new baseline
+npm run fuzz:baseline
+git add artifacts/moment-fuzz-diagnostics.baseline.json
+git commit -m "chore: update fuzz baseline"
+```
+
+See [docs/FUZZ_WORKFLOW.md](docs/FUZZ_WORKFLOW.md) for full CI/CD integration guide, debugging strategies, and configuration options.
 
 ## Deployment
 
