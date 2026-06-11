@@ -117,7 +117,12 @@ export const useGameStore = create<GameState>((set, get) => {
 
       const currentEvolution =
         state.evolutionByCharacter[targetId] ?? createInitialEvolutionProgress(targetCharacter.evolutionPaths);
-      const newEvolution = applyEvolutionInfluence(targetCharacter.evolutionPaths, currentEvolution, action);
+      const newEvolution = applyEvolutionInfluence(
+        targetId,
+        targetCharacter.evolutionPaths,
+        currentEvolution,
+        action
+      );
       const evolvedNow = currentEvolution.evolvedPath === null && newEvolution.evolvedPath !== null;
 
       const newConnections = { ...state.connections, [targetId]: result.newConnection };

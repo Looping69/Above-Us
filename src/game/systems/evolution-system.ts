@@ -1,4 +1,5 @@
 import type { InfluenceAction } from '../types/influence';
+import { getPathForAxisAndCharacter, getActionAxisForCharacter } from '../data/evolution-rules';
 
 export const EVOLUTION_THRESHOLD = 10;
 
@@ -9,19 +10,15 @@ export type CharacterEvolutionProgress = {
 };
 
 function getDominantInfluenceAxis(action: InfluenceAction): 'guardian' | 'creator' | 'shadow' {
-  const guardian = action.alignment.guardian ?? 0;
-  const creator = action.alignment.creator ?? 0;
-  const shadow = (action.alignment.manipulator ?? 0) + (action.alignment.tempter ?? 0);
-
-  if (guardian >= creator && guardian >= shadow) return 'guardian';
-  if (creator >= guardian && creator >= shadow) return 'creator';
-  return 'shadow';
+  return getActionAxisForCharacter(action);
 }
 
-function getPathNameByAxis(paths: string[], axis: 'guardian' | 'creator' | 'shadow'): string {
-  if (axis === 'guardian') return paths[0] ?? 'Path 1';
-  if (axis === 'creator') return paths[1] ?? paths[0] ?? 'Path 1';
-  return paths[2] ?? paths[1] ?? paths[0] ?? 'Path 1';
+function getPathNameByAxisAndCharacter(
+  characterId: string,
+  axis: 'guardian' | 'creator' | 'shadow',
+  paths: string[]
+): string {
+  return getPathForAxisAndCharacter(characterId, axis, paths);
 }
 
 export function createInitialEvolutionProgress(paths: string[]): CharacterEvolutionProgress {
@@ -38,12 +35,13 @@ export function createInitialEvolutionProgress(paths: string[]): CharacterEvolut
 }
 
 export function applyEvolutionInfluence(
+  characterId: string,
   paths: string[],
   current: CharacterEvolutionProgress,
   action: InfluenceAction
 ): CharacterEvolutionProgress {
   const axis = getDominantInfluenceAxis(action);
-  const influencedPath = getPathNameByAxis(paths, axis);
+  const influencedPath = getPathNameByAxisAndCharacter(characterId, axis, paths);
 
   const pathScores = { ...current.pathScores };
   if (pathScores[influencedPath] === undefined) {

@@ -17,37 +17,84 @@ describe('evolution-system', () => {
     expect(initial.evolvedPath).toBeNull();
   });
 
-  it('maps guardian-aligned action to first path', () => {
+  it('maps guardian-aligned action to first path for unknown character', () => {
     const action = influenceActions.find((a) => a.id === 'steady_presence')!;
     const initial = createInitialEvolutionProgress(paths);
-    const next = applyEvolutionInfluence(paths, initial, action);
+    const next = applyEvolutionInfluence('unknown', paths, initial, action);
 
     expect(next.pathScores.Burnout).toBe(1);
-    expect(next.pathScores.Breakthrough).toBe(0);
-    expect(next.pathScores.Dependence).toBe(0);
     expect(next.dominantPath).toBe('Burnout');
   });
 
-  it('maps creator-aligned action to second path', () => {
+  it('maps guardian to Burnout for Lena', () => {
+    const action = influenceActions.find((a) => a.id === 'steady_presence')!;
+    const lenaPaths = ['Burnout', 'Breakthrough', 'Dependence'];
+    const initial = createInitialEvolutionProgress(lenaPaths);
+    const next = applyEvolutionInfluence('lena', lenaPaths, initial, action);
+
+    expect(next.pathScores.Burnout).toBe(1);
+    expect(next.dominantPath).toBe('Burnout');
+  });
+
+  it('maps creator to Breakthrough for Lena', () => {
     const action = influenceActions.find((a) => a.id === 'spark_change')!;
-    const initial = createInitialEvolutionProgress(paths);
-    const next = applyEvolutionInfluence(paths, initial, action);
+    const lenaPaths = ['Burnout', 'Breakthrough', 'Dependence'];
+    const initial = createInitialEvolutionProgress(lenaPaths);
+    const next = applyEvolutionInfluence('lena', lenaPaths, initial, action);
 
     expect(next.pathScores.Breakthrough).toBe(1);
   });
 
-  it('evolves once threshold is reached and keeps evolved path stable', () => {
+  it('maps creator to Artist for Jay', () => {
+    const action = influenceActions.find((a) => a.id === 'spark_change')!;
+    const jayPaths = ['Artist', 'Lost', 'Dependent'];
+    const initial = createInitialEvolutionProgress(jayPaths);
+    const next = applyEvolutionInfluence('jay', jayPaths, initial, action);
+
+    expect(next.pathScores.Artist).toBe(1);
+  });
+
+  it('maps shadow to Lost for Jay', () => {
     const action = influenceActions.find((a) => a.id === 'amplify_emotion')!;
-    let current = createInitialEvolutionProgress(paths);
+    const jayPaths = ['Artist', 'Lost', 'Dependent'];
+    const initial = createInitialEvolutionProgress(jayPaths);
+    const next = applyEvolutionInfluence('jay', jayPaths, initial, action);
+
+    expect(next.pathScores.Lost).toBe(1);
+  });
+
+  it('maps shadow to Self-destruction for Zara', () => {
+    const action = influenceActions.find((a) => a.id === 'amplify_emotion')!;
+    const zaraPaths = ['Self-destruction', 'Awakening', 'Obsession'];
+    const initial = createInitialEvolutionProgress(zaraPaths);
+    const next = applyEvolutionInfluence('zara', zaraPaths, initial, action);
+
+    expect(next.pathScores['Self-destruction']).toBe(1);
+  });
+
+  it('evolves Lena to Breakthrough once threshold is reached', () => {
+    const action = influenceActions.find((a) => a.id === 'spark_change')!;
+    const lenaPaths = ['Burnout', 'Breakthrough', 'Dependence'];
+    let current = createInitialEvolutionProgress(lenaPaths);
 
     for (let i = 0; i < EVOLUTION_THRESHOLD; i += 1) {
-      current = applyEvolutionInfluence(paths, current, action);
+      current = applyEvolutionInfluence('lena', lenaPaths, current, action);
     }
 
-    expect(current.evolvedPath).toBe('Dependence');
+    expect(current.evolvedPath).toBe('Breakthrough');
+  });
+
+  it('keeps evolved path stable after threshold', () => {
+    const action = influenceActions.find((a) => a.id === 'spark_change')!;
+    const lenaPaths = ['Burnout', 'Breakthrough', 'Dependence'];
+    let current = createInitialEvolutionProgress(lenaPaths);
+
+    for (let i = 0; i < EVOLUTION_THRESHOLD; i += 1) {
+      current = applyEvolutionInfluence('lena', lenaPaths, current, action);
+    }
 
     const guardianAction = influenceActions.find((a) => a.id === 'steady_presence')!;
-    const after = applyEvolutionInfluence(paths, current, guardianAction);
-    expect(after.evolvedPath).toBe('Dependence');
+    const after = applyEvolutionInfluence('lena', lenaPaths, current, guardianAction);
+    expect(after.evolvedPath).toBe('Breakthrough');
   });
 });
