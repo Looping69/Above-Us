@@ -16,6 +16,12 @@ export type MomentOutcome = {
   description: string;
 };
 
+export type AdultContent = {
+  rating: 'explicit_18';
+  consent: 'affirmed';
+  body: string;
+};
+
 export type MomentTone =
   | 'emotional'
   | 'romantic'
@@ -38,6 +44,7 @@ export type MomentEvent = {
   characterIds?: string[];
   title: string;
   description: string;
+  adultContent?: AdultContent;
   requirements: MomentRequirements;
   outcome: MomentOutcome;
   tone: MomentTone;
