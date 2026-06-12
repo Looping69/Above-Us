@@ -99,6 +99,12 @@ export const momentEvents: MomentEvent[] = [
     title: 'Charged Silence',
     description:
       'The air changes around them. They notice the pull, name it without surrendering to it, and wait to see whether your presence respects the pause.',
+    adultContent: {
+      rating: 'explicit_18',
+      consent: 'affirmed',
+      body:
+        'They say yes before anything else happens. Clothes come off slowly, with pauses for breath and choice, and the night turns physical: hands on bare skin, mouths finding each other, the first clear movement from wanting to being wanted.',
+    },
     requirements: {
       minTrust: 5,
       minComfort: 4,
@@ -122,6 +128,12 @@ export const momentEvents: MomentEvent[] = [
     title: 'Boundary Named',
     description:
       'They draw a line clearly, not as rejection but as proof they are still choosing. Your influence either makes room for that line or loses the bond.',
+    adultContent: {
+      rating: 'explicit_18',
+      consent: 'affirmed',
+      body:
+        'They state what they want and what stays off-limits, then choose the bed anyway. The sex is slower after that: direct eye contact, guided hands, laughter when a boundary needs repeating, and heat that deepens because neither of them has to guess.',
+    },
     requirements: {
       minTrust: 7,
       minComfort: 6,
@@ -145,6 +157,12 @@ export const momentEvents: MomentEvent[] = [
     title: 'Private Vow',
     description:
       'A private promise forms in the quiet after everything unsaid. They want the intensity, but only if it leaves them more whole than before.',
+    adultContent: {
+      rating: 'explicit_18',
+      consent: 'affirmed',
+      body:
+        'They choose each other without hesitation. The room narrows to bodies, breath, and trust: sex without performance, pleasure answered by pleasure, and the kind of intimacy that leaves them exposed without feeling used.',
+    },
     requirements: {
       minTrust: 8,
       minComfort: 7,
