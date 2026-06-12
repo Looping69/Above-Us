@@ -315,6 +315,20 @@ describe('moment-system', () => {
     expect(checkMomentRequirements(moment.requirements, conn, alignment, {})).toBe(false);
   });
 
+  it('explicit adult moments carry consent metadata and are scoped to adults', () => {
+    const adultMoments = momentEvents.filter((m) => m.adultContent !== undefined);
+    expect(adultMoments.length).toBeGreaterThan(0);
+
+    for (const moment of adultMoments) {
+      expect(moment.adultContent?.rating).toBe('explicit_18');
+      expect(moment.adultContent?.consent).toBe('affirmed');
+      expect(moment.characterIds?.length).toBeGreaterThan(0);
+
+      const scopedCharacters = characters.filter((c) => moment.characterIds?.includes(c.id));
+      expect(scopedCharacters.every((c) => c.age >= 18)).toBe(true);
+    }
+  });
+
   it('applies first_connection outcome deltas to connection and state', () => {
     const moment = momentEvents.find((m) => m.id === 'first_connection');
     if (!moment) throw new Error('first_connection missing');
