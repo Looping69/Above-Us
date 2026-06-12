@@ -57,6 +57,7 @@ If conflicts arise between docs, this file and `docs/GAME_AGENT_RDP.md` must be 
 - Design systems that are replayable and extensible
 - Make influence consequences clear and deterministic
 - Allow explicit consensual 18+ intimacy when trust, comfort, low resistance, and consent gates support it
+- Prefix every commit message with `klaasvaakie:`
 - Test thoroughly before marking work complete
 - Report changed files, tests run, and remaining risks after each task
 
@@ -67,14 +68,15 @@ If conflicts arise between docs, this file and `docs/GAME_AGENT_RDP.md` must be 
 - Add monetisation, auth, or LLM API calls before MVP core works
 - Add sexual content involving minors, non-consensual intimacy, coercion, or characters whose adult status is ambiguous
 - Commit secrets or expose environment variables
+- Commit without the `klaasvaakie:` prefix
 
 
 ### Task Workflow
 
-1. Read task file from `/tasks/task-NNN-*.md`
+1. Read the relevant task file from `/tasks/task-NNN-*.md` when one exists
 2. Use todo list to track multi-step work
 3. Make small, testable changes
-4. Run `npm run build` && `npm run test` before completion
+4. Run `npm run build` && `npm run test` before completion when the local environment supports it
 5. Report:
    - Files changed
    - What was tested
