@@ -14,6 +14,7 @@ Core fantasy: you never enter the world directly; you redirect trajectories.
 - Systems-first outcomes (deterministic): no RNG authority for core progression.
 - Multi-dimensional relationships: no single love meter.
 - Agency-preserving character interaction: consent gates are systemic constraints.
+- Explicit consensual 18+ intimacy is allowed when the game state supports it.
 - Replayability through strategic attention allocation and influence patterns.
 
 ## MVP Technical Stack
@@ -43,12 +44,14 @@ Core fantasy: you never enter the world directly; you redirect trajectories.
 - Systems decide outcomes; flavour text is secondary.
 - Moment triggers must apply declared outcome deltas.
 - Evolution is data-driven and character-specific.
+- Adult intimacy requires deterministic consent gates such as trust, comfort, low resistance, and adult character status.
 
 ## Constraints
 - No backend or auth in MVP.
 - No monetisation in MVP.
 - No LLM API integration in MVP.
 - No expansion worlds in MVP.
+- No sexual content involving minors, ambiguous adult status, non-consent, coercion, or impaired consent.
 - Keep React + Phaser + Zustand architecture.
 
 ## Current Audit Notes
