@@ -10,6 +10,18 @@ export type MissingStateKeyAudit = {
   affectedCharacterIds: string[];
 };
 
+export function getMomentTriggerId(momentId: string, targetCharacterId?: string): string {
+  return targetCharacterId === undefined ? momentId : `${targetCharacterId}:${momentId}`;
+}
+
+export function isMomentTriggered(
+  momentId: string,
+  triggeredIds: Set<string>,
+  targetCharacterId?: string
+): boolean {
+  return triggeredIds.has(momentId) || triggeredIds.has(getMomentTriggerId(momentId, targetCharacterId));
+}
+
 export function checkMomentRequirements(
   requirements: MomentRequirements,
   connection: CharacterConnection,
@@ -49,7 +61,7 @@ export function getAvailableMoments(
       ? []
       : moments.filter(
           (m) =>
-            !triggeredIds.has(m.id) &&
+            !isMomentTriggered(m.id, triggeredIds, targetCharacterId) &&
             m.characterIds !== undefined &&
             m.characterIds.includes(targetCharacterId)
         );
@@ -62,7 +74,7 @@ export function getAvailableMoments(
 
   return moments
     .filter((m) => {
-      if (triggeredIds.has(m.id)) return false;
+      if (isMomentTriggered(m.id, triggeredIds, targetCharacterId)) return false;
       if (targetCharacterId !== undefined && m.characterIds && !m.characterIds.includes(targetCharacterId)) {
         return false;
       }
