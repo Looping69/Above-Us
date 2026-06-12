@@ -91,4 +91,73 @@ export const momentEvents: MomentEvent[] = [
     },
     tone: 'dramatic',
   },
+  {
+    id: 'charged_silence',
+    stage: 1,
+    arcId: 'intimacy_arc',
+    characterIds: ['maya', 'zara'],
+    title: 'Charged Silence',
+    description:
+      'The air changes around them. They notice the pull, name it without surrendering to it, and wait to see whether your presence respects the pause.',
+    requirements: {
+      minTrust: 5,
+      minComfort: 4,
+      maxResistance: 2,
+      minAlignment: {
+        tempter: 3,
+      },
+    },
+    outcome: {
+      connectionDelta: { attraction: 2, trust: 1, resistance: -1 },
+      stateDelta: {},
+      description: 'Desire becomes possible because restraint is still intact.',
+    },
+    tone: 'seductive',
+  },
+  {
+    id: 'boundary_named',
+    stage: 2,
+    arcId: 'intimacy_arc',
+    characterIds: ['maya', 'zara'],
+    title: 'Boundary Named',
+    description:
+      'They draw a line clearly, not as rejection but as proof they are still choosing. Your influence either makes room for that line or loses the bond.',
+    requirements: {
+      minTrust: 7,
+      minComfort: 6,
+      maxResistance: 2,
+      minAlignment: {
+        guardian: 4,
+      },
+    },
+    outcome: {
+      connectionDelta: { trust: 2, comfort: 2, attraction: 1, dependence: -1 },
+      stateDelta: { trust: 1 },
+      description: 'The bond matures because closeness does not erase their agency.',
+    },
+    tone: 'romantic',
+  },
+  {
+    id: 'private_vow',
+    stage: 3,
+    arcId: 'intimacy_arc',
+    characterIds: ['maya', 'zara'],
+    title: 'Private Vow',
+    description:
+      'A private promise forms in the quiet after everything unsaid. They want the intensity, but only if it leaves them more whole than before.',
+    requirements: {
+      minTrust: 8,
+      minComfort: 7,
+      maxResistance: 1,
+      minAlignment: {
+        creator: 5,
+      },
+    },
+    outcome: {
+      connectionDelta: { attraction: 1, comfort: 2, trust: 1, dependence: -1 },
+      stateDelta: { curiosity: 1 },
+      description: 'Intimacy becomes a transformation path, not a shortcut.',
+    },
+    tone: 'romantic',
+  },
 ];
