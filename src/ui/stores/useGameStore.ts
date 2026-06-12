@@ -36,6 +36,7 @@ type GameState = {
   focusedCharacterId: string | null;
   activeMoment: MomentEvent | null;
   triggeredMoments: Set<string>;
+  adultContentEnabled: boolean;
   lastInfluenceFeedback: string | null;
   lastSavedAt: number | null;
 
@@ -43,6 +44,7 @@ type GameState = {
   selectCharacter: (id: string | null) => void;
   applyAction: (action: InfluenceAction, targetId: string) => void;
   dismissMoment: () => void;
+  setAdultContentEnabled: (enabled: boolean) => void;
   saveGame: () => void;
   resetGame: () => void;
 };
@@ -66,6 +68,7 @@ function buildInitialState() {
       alignment: saved.alignment,
       attention: saved.attention,
       triggeredMoments: new Set(saved.triggeredMoments),
+      adultContentEnabled: saved.adultContentEnabled ?? true,
       lastSavedAt: saved.savedAt,
     };
   }
@@ -76,8 +79,22 @@ function buildInitialState() {
     alignment: createDefaultAlignment(),
     attention: 10,
     triggeredMoments: new Set<string>(),
+    adultContentEnabled: true,
     lastSavedAt: null,
   };
+}
+
+function persistStateSnapshot(s: GameState, savedAt: number) {
+  saveGame({
+    characterStates: s.characterStates,
+    connections: s.connections,
+    evolutionByCharacter: s.evolutionByCharacter,
+    alignment: s.alignment,
+    attention: s.attention,
+    triggeredMoments: Array.from(s.triggeredMoments),
+    adultContentEnabled: s.adultContentEnabled,
+    savedAt,
+  });
 }
 
 export const useGameStore = create<GameState>((set, get) => {
@@ -94,6 +111,7 @@ export const useGameStore = create<GameState>((set, get) => {
     focusedCharacterId: null,
     activeMoment: null,
     triggeredMoments: initial.triggeredMoments,
+    adultContentEnabled: initial.adultContentEnabled,
     lastInfluenceFeedback: null,
     lastSavedAt: initial.lastSavedAt,
 
@@ -185,22 +203,17 @@ export const useGameStore = create<GameState>((set, get) => {
 
     dismissMoment: () => set({ activeMoment: null }),
 
+    setAdultContentEnabled: (enabled) => set({ adultContentEnabled: enabled }),
+
     saveGame: () => {
       const s = get();
       const now = Date.now();
-      saveGame({
-        characterStates: s.characterStates,
-        connections: s.connections,
-        evolutionByCharacter: s.evolutionByCharacter,
-        alignment: s.alignment,
-        attention: s.attention,
-        triggeredMoments: Array.from(s.triggeredMoments),
-        savedAt: now,
-      });
+      persistStateSnapshot(s, now);
       set({ lastSavedAt: now });
     },
 
     resetGame: () => {
+      const adultContentEnabled = get().adultContentEnabled;
       clearSave();
       const connections: ConnectionMap = {};
       const characterStates: CharacterStates = {};
@@ -217,6 +230,7 @@ export const useGameStore = create<GameState>((set, get) => {
         alignment: createDefaultAlignment(),
         attention: 10,
         triggeredMoments: new Set(),
+        adultContentEnabled,
         activeMoment: null,
         focusedCharacterId: null,
         lastInfluenceFeedback: null,
@@ -234,18 +248,11 @@ useGameStore.subscribe((state, prev) => {
     state.evolutionByCharacter !== prev.evolutionByCharacter ||
     state.alignment !== prev.alignment ||
     state.triggeredMoments !== prev.triggeredMoments ||
-    state.attention !== prev.attention
+    state.attention !== prev.attention ||
+    state.adultContentEnabled !== prev.adultContentEnabled
   ) {
     const now = Date.now();
-    saveGame({
-      characterStates: state.characterStates,
-      connections: state.connections,
-      evolutionByCharacter: state.evolutionByCharacter,
-      alignment: state.alignment,
-      attention: state.attention,
-      triggeredMoments: Array.from(state.triggeredMoments),
-      savedAt: now,
-    });
+    persistStateSnapshot(state, now);
     // update lastSavedAt without triggering another subscription cycle
     useGameStore.setState({ lastSavedAt: now });
   }
