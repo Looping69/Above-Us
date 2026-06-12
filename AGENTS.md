@@ -26,7 +26,7 @@ If conflicts arise between docs, this file and `docs/GAME_AGENT_RDP.md` must be 
 - Maintain core game concept: **player as unseen force, identity emerges from repeated actions**
 - Design influence actions and their effects on alignment, connection, and character state
 - Design character arcs, evolution paths, and moment events
-- Ensure all intimacy mechanics respect character agency and consent gates
+- Ensure all intimacy mechanics respect character agency, consent gates, and adult-only context
 - Keep all intimacy-capable characters **adults (18+)**
 - Design system-first, not narrative-first — LLM layer is flavour only
 
@@ -55,6 +55,7 @@ If conflicts arise between docs, this file and `docs/GAME_AGENT_RDP.md` must be 
 - Keep MVP simple (no monetisation, no expansions, no backend)
 - Design systems that are replayable and extensible
 - Make influence consequences clear and deterministic
+- Allow mature 18+ romance and desire when trust, comfort, low resistance, and consent gates support them
 - Test thoroughly before marking work complete
 - Report changed files, tests run, and remaining risks after each task
 
@@ -63,6 +64,7 @@ If conflicts arise between docs, this file and `docs/GAME_AGENT_RDP.md` must be 
 - Make huge sweeping rewrites without explicit instruction
 - Hardcode one-off logic — use data files instead
 - Add monetisation, auth, or LLM API calls before MVP core works
+- Add graphic sexual content, non-consensual intimacy, or intimacy systems without consent gates
 - Commit secrets or expose environment variables
 
 
@@ -114,6 +116,7 @@ If conflicts arise between docs, this file and `docs/GAME_AGENT_RDP.md` must be 
 - Build systems that reveal player nature through consequence
 - No single "love meter" — multidimensional connection
 - No cheap intimacy unlocks — earn through systems
+- Mature 18+ intimacy is allowed, but it must be earned through consent-aware systems
 - Make player strategy matter (where to focus attention, which actions to repeat)
 
 ### Data-Driven Development
