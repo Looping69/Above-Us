@@ -95,7 +95,7 @@ Multi-dimensional → **different playstyles create different outcomes**.
 ### 4. **Moment Events**
 High-value emotional, dramatic, or romantic events triggered when requirements are met:
 - `first_connection` – basic moment unlocked at trust ≥5, curiosity ≥4, resistance ≤3
-- `charged_silence`, `boundary_named`, `private_vow` – mature 18+ intimacy arc gated by trust, comfort, alignment, and low resistance
+- `charged_silence`, `boundary_named`, `private_vow` – explicit 18+ intimacy arc gated by trust, comfort, alignment, and low resistance
 - Extensible: add more moments by editing `/src/game/data/moment-events.ts`
 
 ### 5. **Attention System**
@@ -119,9 +119,9 @@ Strategic tension: **focus on one character or spread influence across many?**
 - ✅ Modular, data-driven code
 - ✅ Multi-dimensional intimacy (connection, not single meter)
 - ✅ Character agency maintained; influence sets conditions, not outcomes
-- ✅ Mature 18+ relationship themes allowed when gated by trust, comfort, and resistance
+- ✅ Explicit consensual 18+ relationship content allowed when gated by trust, comfort, and resistance
 - ✅ TypeScript strict mode enforced
-- ❌ No graphic sexual content, non-consensual intimacy, or intimacy without consent gates
+- ❌ No sexual content involving minors, non-consensual intimacy, coercion, or ambiguous adult status
 - ❌ No monetisation in MVP
 - ❌ No authentication / backend in MVP
 - ❌ No LLM integration yet (systems-only MVP)
