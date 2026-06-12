@@ -19,4 +19,10 @@ export const momentArcs: Record<string, MomentArcDefinition> = {
     description: 'Ambition and possibility align with your influence.',
     accentColor: '#e0a05c',
   },
+  intimacy_arc: {
+    id: 'intimacy_arc',
+    title: 'Chosen Closeness',
+    description: 'Adult desire only deepens when trust, comfort, and boundaries hold.',
+    accentColor: '#e05c7c',
+  },
 };
