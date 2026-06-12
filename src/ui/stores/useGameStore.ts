@@ -7,7 +7,7 @@ import { characters as defaultCharacters } from '../../game/data/characters';
 import { createDefaultAlignment } from '../../game/systems/alignment-system';
 import { createDefaultConnection } from '../../game/systems/connection-system';
 import { applyInfluenceAction } from '../../game/systems/influence-system';
-import { applyMomentOutcome, getAvailableMoments } from '../../game/systems/moment-system';
+import { applyMomentOutcome, getAvailableMoments, getMomentTriggerId } from '../../game/systems/moment-system';
 import { momentEvents } from '../../game/data/moment-events';
 import { saveGame, loadGame, clearSave } from '../../game/persistence/save-load';
 import {
@@ -130,7 +130,6 @@ export const useGameStore = create<GameState>((set, get) => {
       const newEvolutionByCharacter = { ...state.evolutionByCharacter, [targetId]: newEvolution };
       const newAttention = state.attention - action.cost;
 
-      // Check for new moments
       const available = getAvailableMoments(
         momentEvents,
         state.triggeredMoments,
@@ -142,7 +141,7 @@ export const useGameStore = create<GameState>((set, get) => {
 
       const triggered = available.length > 0 ? available[0] : null;
       const newTriggered = new Set(state.triggeredMoments);
-      if (triggered) newTriggered.add(triggered.id);
+      if (triggered) newTriggered.add(getMomentTriggerId(triggered.id, targetId));
 
       const withMoment = triggered
         ? applyMomentOutcome(triggered, newConnections[targetId], newCharStates[targetId])
@@ -163,7 +162,9 @@ export const useGameStore = create<GameState>((set, get) => {
         triggeredMoments: newTriggered,
         lastInfluenceFeedback: evolvedNow
           ? `${action.name} applied to ${targetId}. ${targetCharacter.name} evolved toward ${newEvolution.evolvedPath}.`
-          : `${action.name} applied to ${targetId}.`,
+          : triggered
+            ? `${action.name} applied to ${targetId}. Moment unlocked: ${triggered.title}.`
+            : `${action.name} applied to ${targetId}.`,
       });
 
       if (typeof window !== 'undefined') {

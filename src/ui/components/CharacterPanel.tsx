@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useGameStore } from '../stores/useGameStore';
 import { momentEvents } from '../../game/data/moment-events';
 import { momentArcs } from '../../game/data/moment-arcs';
-import { getAvailableMoments } from '../../game/systems/moment-system';
+import { getAvailableMoments, isMomentTriggered } from '../../game/systems/moment-system';
 import type { MomentEvent } from '../../game/types/moment';
 import type { CharacterConnection } from '../../game/types/character';
 import type { PlayerAlignment } from '../../game/types/alignment';
@@ -126,7 +126,7 @@ export function CharacterPanel() {
       (acc, moment) => {
         const current = acc[moment.arcId] ?? { totalStages: 0, triggeredStages: 0, nextStage: undefined };
         current.totalStages += 1;
-        if (triggeredMoments.has(moment.id)) {
+        if (isMomentTriggered(moment.id, triggeredMoments, selected.id)) {
           current.triggeredStages += 1;
         } else {
           current.nextStage = current.nextStage === undefined ? moment.stage : Math.min(current.nextStage, moment.stage);
@@ -142,7 +142,12 @@ export function CharacterPanel() {
         stats.nextStage === undefined
           ? undefined
           : scopedMoments
-              .filter((m) => m.arcId === arcId && m.stage === stats.nextStage && !triggeredMoments.has(m.id))
+              .filter(
+                (m) =>
+                  m.arcId === arcId &&
+                  m.stage === stats.nextStage &&
+                  !isMomentTriggered(m.id, triggeredMoments, selected.id)
+              )
               .sort((a, b) => a.id.localeCompare(b.id))[0];
 
       const readyNow =

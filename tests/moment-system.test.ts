@@ -4,6 +4,8 @@ import {
   auditMissingRequiredStateKeys,
   checkMomentRequirements,
   getAvailableMoments,
+  getMomentTriggerId,
+  isMomentTriggered,
 } from '../src/game/systems/moment-system';
 import { createDefaultAlignment } from '../src/game/systems/alignment-system';
 import { createDefaultConnection } from '../src/game/systems/connection-system';
@@ -36,6 +38,21 @@ describe('moment-system', () => {
     const triggered = new Set(['first_connection']);
     const available = getAvailableMoments(momentEvents, triggered, conn, createDefaultAlignment(), {}, 'lena');
     expect(available.find((m) => m.id === 'first_connection')).toBeUndefined();
+  });
+
+  it('supports character-scoped moment trigger ids', () => {
+    const triggered = new Set([getMomentTriggerId('first_connection', 'lena')]);
+
+    expect(isMomentTriggered('first_connection', triggered, 'lena')).toBe(true);
+    expect(isMomentTriggered('first_connection', triggered, 'jay')).toBe(false);
+  });
+
+  it('allows the same global moment to trigger for another character', () => {
+    const conn = { ...createDefaultConnection(), trust: 6, curiosity: 5, resistance: 1 };
+    const triggered = new Set([getMomentTriggerId('first_connection', 'lena')]);
+    const jayAvailable = getAvailableMoments(momentEvents, triggered, conn, createDefaultAlignment(), {}, 'jay');
+
+    expect(jayAvailable.find((m) => m.id === 'first_connection')).toBeDefined();
   });
 
   it('returns first_connection when conditions are met and not triggered', () => {
@@ -270,6 +287,32 @@ describe('moment-system', () => {
     const state = {};
 
     expect(checkMomentRequirements(moment.requirements, conn, alignment, state)).toBe(false);
+  });
+
+  it('charged_silence requires mature intimacy gates', () => {
+    const moment = momentEvents.find((m) => m.id === 'charged_silence')!;
+    const conn = {
+      ...createDefaultConnection(),
+      trust: 5,
+      comfort: 4,
+      resistance: 2,
+    };
+    const alignment = { ...createDefaultAlignment(), tempter: 3 };
+
+    expect(checkMomentRequirements(moment.requirements, conn, alignment, {})).toBe(true);
+  });
+
+  it('charged_silence blocks when resistance is too high', () => {
+    const moment = momentEvents.find((m) => m.id === 'charged_silence')!;
+    const conn = {
+      ...createDefaultConnection(),
+      trust: 8,
+      comfort: 8,
+      resistance: 3,
+    };
+    const alignment = { ...createDefaultAlignment(), tempter: 5 };
+
+    expect(checkMomentRequirements(moment.requirements, conn, alignment, {})).toBe(false);
   });
 
   it('applies first_connection outcome deltas to connection and state', () => {
