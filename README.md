@@ -95,6 +95,7 @@ Multi-dimensional → **different playstyles create different outcomes**.
 ### 4. **Moment Events**
 High-value emotional, dramatic, or romantic events triggered when requirements are met:
 - `first_connection` – basic moment unlocked at trust ≥5, curiosity ≥4, resistance ≤3
+- `charged_silence`, `boundary_named`, `private_vow` – mature 18+ intimacy arc gated by trust, comfort, alignment, and low resistance
 - Extensible: add more moments by editing `/src/game/data/moment-events.ts`
 
 ### 5. **Attention System**
@@ -118,7 +119,9 @@ Strategic tension: **focus on one character or spread influence across many?**
 - ✅ Modular, data-driven code
 - ✅ Multi-dimensional intimacy (connection, not single meter)
 - ✅ Character agency maintained; influence sets conditions, not outcomes
+- ✅ Mature 18+ relationship themes allowed when gated by trust, comfort, and resistance
 - ✅ TypeScript strict mode enforced
+- ❌ No graphic sexual content, non-consensual intimacy, or intimacy without consent gates
 - ❌ No monetisation in MVP
 - ❌ No authentication / backend in MVP
 - ❌ No LLM integration yet (systems-only MVP)
@@ -139,15 +142,17 @@ Later, an optional LLM layer can generate character thoughts, dialogue, and flav
 - ✅ Alignment & connection tracking
 - ✅ Isometric grid & movement
 - ✅ Selection & detail panel
-- ✅ 1 moment event (`first_connection`)
-- ✅ 20 tests, passing build
+- ✅ Character-scoped moment events with outcome effects
+- ✅ Character evolution progress, local save/load, visual feedback, and fuzz balance checks
+- ✅ 25+ tests covering core systems
 
 ### Next Phase (Post-MVP)
-- [ ] More moment events (3–5 per character)
+- [x] More moment events and multi-stage arcs
 - [ ] NPC-to-NPC relationships (jealousy, mentorship, romance)
-- [ ] Character evolution tree (unlock new states based on influence)
-- [ ] Save/load system (localStorage MVP)
-- [ ] Visual effects (influence particles, animations)
+- [x] Character evolution progress based on influence patterns
+- [x] Save/load system (localStorage MVP)
+- [x] Visual effects (influence particles)
+- [ ] Character evolution consequences in dialogue/UI/world behaviour
 - [ ] Time system (days, seasons, routines)
 - [ ] World events (job loss, promotion, social drama)
 
@@ -204,7 +209,7 @@ npm run build
 
 - **Phaser scene tightly coupled to Zustand store** — works for MVP; can be decoupled via event emitter later
 - **Phaser bundle ~1.6MB** — acceptable for web game; code-split when needed
-- **No persistent save yet** — currently in-memory only; localStorage coming soon
+- **Persistent save is local-only** — localStorage works for MVP; cloud save is a later expansion
 - **Character movement is random walk** — replace with AI/routine system later
 
 ## Contributing
