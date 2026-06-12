@@ -23,8 +23,15 @@ export function MomentPanel() {
         <div style={{ ...styles.toneBadge, background: toneColor + '22', color: toneColor, border: `1px solid ${toneColor}44` }}>
           {moment.tone}
         </div>
+        {moment.adultContent ? <div style={styles.adultBadge}>18+ explicit consensual scene</div> : null}
         <h2 style={styles.title}>{moment.title}</h2>
         <p style={styles.description}>{moment.description}</p>
+        {moment.adultContent ? (
+          <div style={styles.adultScene}>
+            <div style={styles.consentLine}>Consent: {moment.adultContent.consent}</div>
+            <p style={styles.adultText}>{moment.adultContent.body}</p>
+          </div>
+        ) : null}
         <div style={styles.divider} />
         <p style={styles.outcome}>{moment.outcome.description}</p>
         <button style={{ ...styles.btn, borderColor: toneColor, color: toneColor }} onClick={dismiss}>
@@ -51,7 +58,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid #0f3460',
     borderRadius: 12,
     padding: '28px 32px',
-    maxWidth: 460,
+    maxWidth: 540,
     width: '90%',
     color: '#e0e0e0',
     textAlign: 'center',
@@ -64,10 +71,32 @@ const styles: Record<string, React.CSSProperties> = {
     letterSpacing: 2,
     borderRadius: 4,
     padding: '2px 10px',
-    marginBottom: 14,
+    marginBottom: 8,
+  },
+  adultBadge: {
+    width: 'fit-content',
+    margin: '0 auto 14px',
+    border: '1px solid #e05c7c66',
+    borderRadius: 4,
+    color: '#f1a6ba',
+    background: '#2a101a',
+    fontSize: 10,
+    letterSpacing: 1.2,
+    padding: '3px 9px',
+    textTransform: 'uppercase',
   },
   title: { fontSize: 22, fontWeight: 700, marginBottom: 14, color: '#fff' },
   description: { fontSize: 14, lineHeight: 1.7, color: '#bbb', marginBottom: 18, fontStyle: 'italic' },
+  adultScene: {
+    border: '1px solid #2d2544',
+    borderRadius: 8,
+    background: '#111021',
+    padding: '14px 16px',
+    marginBottom: 18,
+    textAlign: 'left',
+  },
+  consentLine: { color: '#f1a6ba', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 8 },
+  adultText: { color: '#ddd', fontSize: 13, lineHeight: 1.7, margin: 0 },
   divider: { height: 1, background: '#0f3460', margin: '0 0 18px' },
   outcome: { fontSize: 13, color: '#888', marginBottom: 24 },
   btn: {
