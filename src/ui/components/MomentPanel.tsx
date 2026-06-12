@@ -11,11 +11,13 @@ const toneColors: Record<string, string> = {
 
 export function MomentPanel() {
   const moment = useGameStore((s) => s.activeMoment);
+  const adultContentEnabled = useGameStore((s) => s.adultContentEnabled);
   const dismiss = useGameStore((s) => s.dismissMoment);
 
   if (!moment) return null;
 
   const toneColor = toneColors[moment.tone] ?? '#7ec8e3';
+  const shouldShowAdultContent = Boolean(moment.adultContent && adultContentEnabled);
 
   return (
     <div style={styles.overlay}>
@@ -29,7 +31,11 @@ export function MomentPanel() {
         {moment.adultContent ? (
           <div style={styles.adultScene}>
             <div style={styles.consentLine}>Consent: {moment.adultContent.consent}</div>
-            <p style={styles.adultText}>{moment.adultContent.body}</p>
+            {shouldShowAdultContent ? (
+              <p style={styles.adultText}>{moment.adultContent.body}</p>
+            ) : (
+              <p style={styles.adultTextMuted}>Explicit scene text hidden. Enable 18+ scenes in the HUD to show it.</p>
+            )}
           </div>
         ) : null}
         <div style={styles.divider} />
@@ -97,6 +103,7 @@ const styles: Record<string, React.CSSProperties> = {
   },
   consentLine: { color: '#f1a6ba', fontSize: 10, textTransform: 'uppercase', letterSpacing: 1.2, marginBottom: 8 },
   adultText: { color: '#ddd', fontSize: 13, lineHeight: 1.7, margin: 0 },
+  adultTextMuted: { color: '#87879a', fontSize: 13, lineHeight: 1.7, margin: 0, fontStyle: 'italic' },
   divider: { height: 1, background: '#0f3460', margin: '0 0 18px' },
   outcome: { fontSize: 13, color: '#888', marginBottom: 24 },
   btn: {
