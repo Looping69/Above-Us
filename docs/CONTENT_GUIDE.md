@@ -7,6 +7,7 @@ Narrative and content constraints align with /docs/GAME_AGENT_RDP.md.
 - All intimacy-capable characters are adults (18+).
 - Character agency remains inviolable.
 - Explicit consensual adult content is allowed when system gates support it.
+- Explicit scene text must respect the persisted 18+ Scenes preference in UI.
 - Do not include sexual content involving minors, ambiguous adult status, non-consent, coercion, or impaired consent.
 
 ## Moment Authoring Rules
@@ -15,6 +16,7 @@ Narrative and content constraints align with /docs/GAME_AGENT_RDP.md.
   - requirements
   - outcome.connectionDelta and outcome.stateDelta
 - Adult intimacy moments must require enough trust, comfort, and low resistance to model consent and mutual willingness.
+- Adult content payloads must declare `rating: 'explicit_18'` and `consent: 'affirmed'`.
 - Requirements should be triggerable for at least one scoped character.
 - If using requiredState keys, verify those keys exist in scoped character.state or are intentionally introduced via systems.
 
@@ -31,3 +33,4 @@ Narrative and content constraints align with /docs/GAME_AGENT_RDP.md.
 ## Testing Content Changes
 - Add/adjust tests in tests/moment-system.test.ts when adding moments.
 - Add/adjust tests in tests/evolution-system.test.ts when changing evolution rules.
+- Add/adjust preference coverage when changing adult-content visibility behavior.

@@ -13,6 +13,8 @@ export function HUD() {
   const maxAttention = useGameStore((s) => s.maxAttention);
   const feedback = useGameStore((s) => s.lastInfluenceFeedback);
   const lastSavedAt = useGameStore((s) => s.lastSavedAt);
+  const adultContentEnabled = useGameStore((s) => s.adultContentEnabled);
+  const setAdultContentEnabled = useGameStore((s) => s.setAdultContentEnabled);
   const resetGame = useGameStore((s) => s.resetGame);
   const dominant = getDominantAlignment(alignment);
 
@@ -36,6 +38,14 @@ export function HUD() {
           ))}
         </div>
       </div>
+      <label style={styles.toggleRow}>
+        <span style={styles.label}>18+ Scenes</span>
+        <input
+          type="checkbox"
+          checked={adultContentEnabled}
+          onChange={(event) => setAdultContentEnabled(event.currentTarget.checked)}
+        />
+      </label>
       <div style={styles.alignmentRow}>
         {(['manipulator', 'guardian', 'tempter', 'creator'] as const).map((k) => (
           <div key={k} style={styles.alignItem}>
@@ -80,7 +90,11 @@ const styles: Record<string, React.CSSProperties> = {
   value: { color: '#e0a05c', fontWeight: 700 },
   attentionBar: { display: 'flex', gap: 3, marginTop: 2 },
   pip: { width: 12, height: 12, borderRadius: 3, border: '1px solid #0f3460', transition: 'background 0.3s' },
-  alignmentRow: { display: 'flex', gap: 10, marginTop: 6 },
+  toggleRow: {
+    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+    borderTop: '1px solid #0f3460', paddingTop: 6, marginTop: 6, cursor: 'pointer',
+  },
+  alignmentRow: { display: 'flex', gap: 10, marginTop: 8 },
   alignItem: { display: 'flex', flexDirection: 'column', alignItems: 'center' },
   alignLabel: { fontSize: 9, color: '#555', textTransform: 'uppercase' },
   alignVal: { fontSize: 14, color: '#7ec8e3', fontWeight: 700 },

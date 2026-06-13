@@ -11,6 +11,7 @@ export type SaveData = {
   alignment: PlayerAlignment;
   attention: number;
   triggeredMoments: string[];
+  adultContentEnabled?: boolean;
   savedAt: number;
 };
 

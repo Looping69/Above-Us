@@ -329,6 +329,16 @@ describe('moment-system', () => {
     }
   });
 
+  it('explicit adult moments require consent gates', () => {
+    const adultMoments = momentEvents.filter((m) => m.adultContent !== undefined);
+
+    for (const moment of adultMoments) {
+      expect(moment.requirements.minTrust).toBeGreaterThanOrEqual(5);
+      expect(moment.requirements.minComfort).toBeGreaterThanOrEqual(4);
+      expect(moment.requirements.maxResistance).toBeLessThanOrEqual(2);
+    }
+  });
+
   it('applies first_connection outcome deltas to connection and state', () => {
     const moment = momentEvents.find((m) => m.id === 'first_connection');
     if (!moment) throw new Error('first_connection missing');

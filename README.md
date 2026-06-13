@@ -98,6 +98,8 @@ High-value emotional, dramatic, or romantic events triggered when requirements a
 - `charged_silence`, `boundary_named`, `private_vow` – explicit 18+ intimacy arc gated by trust, comfort, alignment, and low resistance
 - Extensible: add more moments by editing `/src/game/data/moment-events.ts`
 
+Explicit scene text is controlled by the HUD **18+ Scenes** toggle. The moment still resolves when disabled, but the explicit scene body is hidden.
+
 ### 5. **Attention System**
 Limited resource (start: 10/10). Actions cost attention; attention regenerates over time.
 Strategic tension: **focus on one character or spread influence across many?**
@@ -120,6 +122,7 @@ Strategic tension: **focus on one character or spread influence across many?**
 - ✅ Multi-dimensional intimacy (connection, not single meter)
 - ✅ Character agency maintained; influence sets conditions, not outcomes
 - ✅ Explicit consensual 18+ relationship content allowed when gated by trust, comfort, and resistance
+- ✅ HUD preference can hide explicit scene text while preserving gameplay outcomes
 - ✅ TypeScript strict mode enforced
 - ❌ No sexual content involving minors, non-consensual intimacy, coercion, or ambiguous adult status
 - ❌ No monetisation in MVP
@@ -144,6 +147,7 @@ Later, an optional LLM layer can generate character thoughts, dialogue, and flav
 - ✅ Selection & detail panel
 - ✅ Character-scoped moment events with outcome effects
 - ✅ Character evolution progress, local save/load, visual feedback, and fuzz balance checks
+- ✅ Explicit 18+ scene payloads with a persisted HUD preference
 - ✅ 25+ tests covering core systems
 
 ### Next Phase (Post-MVP)
@@ -171,6 +175,7 @@ All core systems have unit tests:
 - `influence-system.test.ts` – action effects and state changes
 - `connection-system.test.ts` – connection clamping and deltas
 - `moment-system.test.ts` – requirement gates and triggering
+- `adult-content-preference.test.ts` – explicit scene preference defaults and toggling
 - `character-data.test.ts` – data integrity (all adults, all fields present)
 
 Run: `npm run test`
@@ -186,7 +191,7 @@ npm run fuzz:check
 # After intentional balance adjustments, commit new baseline
 npm run fuzz:baseline
 git add artifacts/moment-fuzz-diagnostics.baseline.json
-git commit -m "chore: update fuzz baseline"
+git commit -m "klaasvaakie: update fuzz baseline"
 ```
 
 See [docs/FUZZ_WORKFLOW.md](docs/FUZZ_WORKFLOW.md) for full CI/CD integration guide, debugging strategies, and configuration options.
